@@ -1,0 +1,298 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>金陵科技学院学生成绩管理系统</title>
+<link href="static/css/jquery-ui.css" rel="stylesheet">
+<link href="static/css/ui.jqgrid.css" rel="stylesheet">
+<style>
+   /* input { display:block; } */
+   input.text { margin-bottom:6px; width:95%; padding: .2em; }
+	  fieldset { padding:0; border:0; margin-top:10px; } 
+body {
+	font: 62.5% "Trebuchet MS", sans-serif;
+	margin: 50px;
+}
+
+.demoHeaders {
+	margin-top: 2em;
+}
+
+#dialog-link {
+	padding: .4em 1em .4em 20px;
+	text-decoration: none;
+	position: relative;
+}
+
+#dialog-link span.ui-icon {
+	margin: 0 5px 0 0;
+	position: absolute;
+	left: .2em;
+	top: 50%;
+	margin-top: -8px;
+}
+
+#icons {
+	margin: 0;
+	padding: 0;
+}
+
+#icons li {
+	margin: 2px;
+	position: relative;
+	padding: 4px 0;
+	cursor: pointer;
+	float: left;
+	list-style: none;
+}
+
+#icons span.ui-icon {
+	float: left;
+	margin: 0 4px;
+}
+/* .positionDiv {
+    position: absolute;
+   
+ } */
+.fakewindowcontain .ui-widget-overlay {
+	position: absolute;
+}
+
+select {
+	width: 200px;
+}
+</style>
+</head>
+<body>
+
+	<h1>欢迎使用金陵科技学院学生成绩管理系统</h1>
+
+	<div id="progressbar"></div>
+<!-- style="display: none" -->
+<!-- id = "ErrorInfo" -->
+	<h2>功能：</h2>
+	<div class="ui-widget">
+	<div  id = "ErrorInfo" style="display: none" class="ui-state-error ui-corner-all" style="padding: 0 .7em;">
+		<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+		<strong>Alert:</strong> Sample ui-state-error style.</p>
+	</div>
+	</div>
+	<div id="accordion">
+		<h3>查看成绩信息</h3>
+		<div>
+			<table id="list" ></table>
+			<div id="pager" ></div>
+				<div id="dialog1" title="添加学生成绩"  style="display: none">
+				<form style=display:block>
+					<fieldset>
+						<label for="id">学号</label>
+						<input type="text" name="id" id="id" class="text ui-widget-content ui-corner-all">
+						 
+						<label for="stuName">学生姓名</label>
+						<input type="text" name="stuName" id="stuName" class="text ui-widget-content ui-corner-all"><br>
+						   
+						<label for="CGrade">C语言</label>
+						<input type="text" name="CGrade" id="CGrade" class="text ui-widget-content ui-corner-all">
+							 
+						<label for="MGrade">高等数学</label>
+						<input type="text" name="MGrade" id="MGrade" class="text ui-widget-content ui-corner-all">
+							 
+						<label for="EGrade">英语</label>
+						<input type="text" name="EGrade" id="EGrade" class="text ui-widget-content ui-corner-all">
+							 
+						<label for="LAGrade">线性代数</label>
+						<input type="text" name="LAGrade" id="LAGrade" class="text ui-widget-content ui-corner-all">
+					</fieldset>
+				</form>
+			</div>
+			<div id="dialog3" title="修改学生成绩"  style="display: none">
+				<form style=display:block>
+					<fieldset>
+						<label for="uid">学号</label>
+						<input type="text" name="uid" id="uid" class="text ui-widget-content ui-corner-all">
+						 
+						<label for="ustuName">学生姓名</label>
+						<input type="text" name="ustuName" id="ustuName" class="text ui-widget-content ui-corner-all"><br>
+						   
+						<label for="uCGrade">C语言</label>
+						<input type="text" name="uCGrade" id="uCGrade" class="text ui-widget-content ui-corner-all">
+							 
+						<label for="uMGrade">高等数学</label>
+						<input type="text" name="uMGrade" id="uMGrade" class="text ui-widget-content ui-corner-all">
+							 
+						<label for="uEGrade">英语</label>
+						<input type="text" name="uEGrade" id="uEGrade" class="text ui-widget-content ui-corner-all">
+							 
+						<label for="uLAGrade">线性代数</label>
+						<input type="text" name="uLAGrade" id="uLAGrade" class="text ui-widget-content ui-corner-all">
+					</fieldset>
+				</form>
+			</div>
+		</div>
+		<h3>统计</h3>
+		<div id = "collection">
+		<table>
+		<tr><td>
+			<div id = "collectionFIR" style="width:300px">
+				<h2 class="demoHeaders">计算全部学生平均分</h2>
+				<button id="CalAVG">计算平均分</button>
+			</div>
+			</td>
+			<td>
+			<div id = "calsinavg" style="width:300px">
+				<h2 class="demoHeaders">计算单门课程平均分</h2>
+				<select id="selectmenu">
+					<option>C语言程序设计</option>
+					<option>高等数学</option>
+					<option selected="selected">英语</option>
+					<option>线性代数</option>
+								
+				</select>
+						
+			</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<div style="width:300px">
+				<h2 class="demoHeaders">计算排名</h2>
+				<button id="CalRank">计算排名</button>
+			</div>
+			</td>
+			<td>
+			<div style="width:350px">
+				<h2 class="demoHeaders">显示分数段人数</h2>
+				<div class="ui-widget" >
+							<div id="IndicateByPart" class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .3em;">
+								<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+								<strong>分数段人数</strong> </p>
+							</div>
+						</div>
+				<form style="margin-top: 1em;">
+					<div id="radioset0">
+						<input type="radio" id="radio1" name="radioset0"><label for="radio1">C语言程序设计</label>
+						<input type="radio" id="radio2" name="radioset0" checked="checked"><label for="radio2">高等数学</label>
+						<input type="radio" id="radio3" name="radioset0"><label for="radio3">英语</label>
+						<input type="radio" id="radio4" name="radioset0"><label for="radio4">线性代数</label>
+						<input type="radio" id="radio5" name="radioset0"><label for="radio5">平均分</label>
+					</div>
+					
+				</form>
+				<form style="margin-top: 1em;">
+				<div id="radioset1">
+						<input type="radio" id="radio6" name="radioset1" ><label for="radio6" style="width:62px">~-59</label>
+						<input type="radio" id="radio7" name="radioset1" checked="checked"><label for="radio7" style="width:62px">60-69</label>
+						<input type="radio" id="radio8" name="radioset1"><label for="radio8" style="width:62px">70-79</label>
+						<input type="radio" id="radio9" name="radioset1"><label for="radio9" style="width:65px">80-89</label>
+						<input type="radio" id="radio10" name="radioset1"><label for="radio10" style="width:70px">90-100</label>
+					</div>
+				</form>
+				
+			</div>
+			</td>
+		</tr>
+		</table>		
+			<div id="dialog-calsingleavg" title="计算课程平均分"  style="display: none">
+				<form style=display:block>
+					<fieldset>
+						<label for="avg">计算完成！平均分为：</label>
+						<div class="ui-widget" >
+							<div id="SingleAVG" class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
+								<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+								<strong>平均分</strong> </p>
+							</div>
+						</div>
+						
+						<!-- <div id="SingleAVG" style="border: 1px solid yellow;">平均分</div> -->
+						 
+					
+					</fieldset>
+				</form>
+				
+			</div>
+			
+			
+		</div>
+		
+		<h3>Other functions</h3>
+		<div>other functions</div>
+	</div>
+
+
+
+
+
+	<script src="webjars/jquery/2.0.3/jquery.js"></script>
+	<script src="static/ui/jquery-ui.js"></script>
+	<script src="static/ui/grid.locale-zh_CN.js"></script>
+	<script src="static/ui/jquery.jqGrid.js"></script>
+
+	<script src="static/js/ajax.js"></script>
+	<script src="static/js/Grades.js"></script>
+	<script src="static/js/Collection.js"></script>
+
+
+	<script>
+		$( "#progressbar" ).progressbar({
+			value: 100
+		});
+		
+		$("#accordion").accordion();
+		
+		$( "#CalAVG" ).button();
+		
+		$( "#CalRank" ).button();
+		
+		$( "#selectmenu" ).selectmenu({
+			 change: function(event,data) {
+				 var item = data.item.index; 
+            	 CalSingleAVG(item);
+            }
+		});
+		
+		$( "#selectmenu2" ).selectmenu({
+			 change: function(event,data) {
+				 var part = data.item.index; 
+            	 IndicateByPart(part);
+            }
+		});
+		
+		$( "#CalRank" ).click(function (event){
+			CalRank();
+			event.preventDefault();
+		});
+		
+		$( "#CalAVG" ).click(function( event ) {
+			CalAllAVG();
+			event.preventDefault();
+		});
+		
+		$( "#dialog-link, #icons li" ).hover(
+			function() {
+				$( this ).addClass( "ui-state-hover" );
+			},
+			function() {
+				$( this ).removeClass( "ui-state-hover" );
+			}
+		);
+		
+		$( "#radioset0" ).buttonset();
+		
+		$( "#radioset0" ).change(function() {
+   			 var x=$("[name='radioset0']").filter(":checked").attr("id");
+   			 var y=$("[name='radioset1']").filter(":checked").attr("id");
+   			 var part = x+y;
+			 IndicateByPart(part);
+		});
+		
+		$( "#radioset1" ).buttonset();
+		
+		$( "#radioset1" ).change(function() {
+   			 var x=$("[name='radioset0']").filter(":checked").attr("id");
+   			 var y=$("[name='radioset1']").filter(":checked").attr("id");
+   			 var part = x+y;
+			 IndicateByPart(part);
+		});
+	</script>
+</body>
+</html>
