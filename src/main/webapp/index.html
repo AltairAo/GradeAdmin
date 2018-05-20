@@ -5,6 +5,7 @@
 <title>金陵科技学院学生成绩管理系统</title>
 <link href="static/css/jquery-ui.css" rel="stylesheet">
 <link href="static/css/ui.jqgrid.css" rel="stylesheet">
+<link rel="stylesheet" href="static/css/jqx.base.css" type="text/css" />
 <style>
    /* input { display:block; } */
    input.text { margin-bottom:6px; width:95%; padding: .2em; }
@@ -78,70 +79,13 @@ select {
 	</div>
 	</div>
 	<div id="accordion">
-		<h3>查看成绩信息</h3>
-		<div>
-			<table id="list" ></table>
-			<div id="pager" ></div>
-				<div id="dialog1" title="添加学生成绩"  style="display: none">
-				<form style=display:block>
-					<fieldset>
-						<label for="id">学号</label>
-						<input type="text" name="id" id="id" class="text ui-widget-content ui-corner-all">
-						 
-						<label for="stuName">学生姓名</label>
-						<input type="text" name="stuName" id="stuName" class="text ui-widget-content ui-corner-all"><br>
-						   
-						<label for="CGrade">C语言</label>
-						<input type="text" name="CGrade" id="CGrade" class="text ui-widget-content ui-corner-all">
-							 
-						<label for="MGrade">高等数学</label>
-						<input type="text" name="MGrade" id="MGrade" class="text ui-widget-content ui-corner-all">
-							 
-						<label for="EGrade">英语</label>
-						<input type="text" name="EGrade" id="EGrade" class="text ui-widget-content ui-corner-all">
-							 
-						<label for="LAGrade">线性代数</label>
-						<input type="text" name="LAGrade" id="LAGrade" class="text ui-widget-content ui-corner-all">
-					</fieldset>
-				</form>
-			</div>
-			<div id="dialog3" title="修改学生成绩"  style="display: none">
-				<form style=display:block>
-					<fieldset>
-						<label for="uid">学号</label>
-						<input type="text" name="uid" id="uid" class="text ui-widget-content ui-corner-all">
-						 
-						<label for="ustuName">学生姓名</label>
-						<input type="text" name="ustuName" id="ustuName" class="text ui-widget-content ui-corner-all"><br>
-						   
-						<label for="uCGrade">C语言</label>
-						<input type="text" name="uCGrade" id="uCGrade" class="text ui-widget-content ui-corner-all">
-							 
-						<label for="uMGrade">高等数学</label>
-						<input type="text" name="uMGrade" id="uMGrade" class="text ui-widget-content ui-corner-all">
-							 
-						<label for="uEGrade">英语</label>
-						<input type="text" name="uEGrade" id="uEGrade" class="text ui-widget-content ui-corner-all">
-							 
-						<label for="uLAGrade">线性代数</label>
-						<input type="text" name="uLAGrade" id="uLAGrade" class="text ui-widget-content ui-corner-all">
-					</fieldset>
-				</form>
-			</div>
-		</div>
 		<h3>统计</h3>
 		<div id = "collection">
 		<table>
 		<tr><td>
-			<div id = "collectionFIR" style="width:300px">
-				<h2 class="demoHeaders">计算全部学生平均分</h2>
-				<button id="CalAVG">计算平均分</button>
-			</div>
-			</td>
-			<td>
-			<div id = "calsinavg" style="width:300px">
+			<div id = "calsinavg1" style="width:300px">
 				<h2 class="demoHeaders">计算单门课程平均分</h2>
-				<select id="selectmenu">
+				<select id="selectmenu1">
 					<option>C语言程序设计</option>
 					<option>高等数学</option>
 					<option selected="selected">英语</option>
@@ -151,7 +95,18 @@ select {
 						
 			</div>
 			</td>
+			<td>
+			<div id = "calsinavg2" style="width:300px">
+				<h2 class="demoHeaders">计算单门课程平均分</h2>
+				<select id="selectmenu2">
+					
+								
+				</select>
+						
+			</div>
+			</td>
 		</tr>
+
 		<tr>
 			<td>
 			<div style="width:300px">
@@ -192,6 +147,7 @@ select {
 			</td>
 		</tr>
 		</table>		
+			<textarea id="jqxTextArea"></textarea>
 			<div id="dialog-calsingleavg" title="计算课程平均分"  style="display: none">
 				<form style=display:block>
 					<fieldset>
@@ -218,21 +174,26 @@ select {
 		<div>other functions</div>
 	</div>
 
+</body>
 
-
+   
 
 
 	<script src="webjars/jquery/2.0.3/jquery.js"></script>
 	<script src="static/ui/jquery-ui.js"></script>
-	<script src="static/ui/grid.locale-zh_CN.js"></script>
-	<script src="static/ui/jquery.jqGrid.js"></script>
-
+	
+	 <script type="text/javascript" src="static/ui/jqxcore.js"></script>
+    <script type="text/javascript" src="static/ui/jqxbuttons.js"></script>
+    <script type="text/javascript" src="static/ui/jqxscrollbar.js"></script>
+    <script type="text/javascript" src="static/ui/jqxtextarea.js"></script>
+	
 	<script src="static/js/ajax.js"></script>
 	<script src="static/js/Grades.js"></script>
 	<script src="static/js/Collection.js"></script>
 
 
 	<script>
+	    $('#jqxTextArea').jqxTextArea({ width: 250, height: 100, placeHolder: 'Enter a sentence...' });
 		$( "#progressbar" ).progressbar({
 			value: 100
 		});
@@ -243,27 +204,56 @@ select {
 		
 		$( "#CalRank" ).button();
 		
-		$( "#selectmenu" ).selectmenu({
-			 change: function(event,data) {
-				 var item = data.item.index; 
-            	 CalSingleAVG(item);
-            }
+		$( "#selectmenu1" ).selectmenu({
+			change: function(event,data) {
+				console.log("1 changed");
+				$( "#selectmenu2" ).empty();
+				$( "#selectmenu2" ).append("<option>4</option>");
+				$( "#selectmenu2" ).append("<option>5</option>");
+				$( "#selectmenu2" ).append("<option>6</option>");
+				$("#selectmenu2").selectmenu().selectmenu('refresh', true);
+			}
 		});
 		
 		$( "#selectmenu2" ).selectmenu({
 			 change: function(event,data) {
-				 var part = data.item.index; 
-            	 IndicateByPart(part);
+				
             }
 		});
 		
 		$( "#CalRank" ).click(function (event){
-			CalRank();
+			$("#dialog-calsingleavg").dialog({
+					autoOpen : false,
+					modal : true,
+					hide : {
+						effect : "puff",
+						duration : 500
+					},
+					width : 400,
+
+					buttons : [
+							{
+								text : "Ok",
+								click : function() {
+									$("#SingleAVG").removeAttr("readonly");
+									jQuery('#SingleAVG').html("");
+									$(this).dialog("close");
+								}
+							}, {
+								text : "Cancel",
+								click : function() {
+									$("#SingleAVG").removeAttr("readonly");
+									jQuery('#SingleAVG').html("");
+									$(this).dialog("close");
+								}
+							} ]
+			});
+			$("#dialog-calsingleavg").dialog("open");
 			event.preventDefault();
 		});
 		
 		$( "#CalAVG" ).click(function( event ) {
-			CalAllAVG();
+
 			event.preventDefault();
 		});
 		
@@ -293,6 +283,9 @@ select {
    			 var part = x+y;
 			 IndicateByPart(part);
 		});
+		
+		
+		init();
 	</script>
-</body>
+
 </html>

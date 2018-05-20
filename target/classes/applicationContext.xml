@@ -10,14 +10,6 @@
 	default-autowire="byName" default-lazy-init="true">
 	<context:component-scan base-package="org.altair.grades" />
 
-	<!-- JPA Transaction manager JPA -->
-	<bean id="entityManagerFactory"
-		class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
-		<property name="persistenceUnitName" value="jpaMysql" />
-	</bean>	
-	<!-- TransAction Manager JPA -->
-	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-		<property name="entityManagerFactory" ref="entityManagerFactory" />
-	</bean>	
+	
 	<tx:annotation-driven transaction-manager="transactionManager" />
 </beans>
